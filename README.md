@@ -16,7 +16,8 @@ a2c in cartpole and pendulum, the training result shows below
 
 ![a2c-cartpole](./a2c-cartpole-result.png)
 <center>result of a2c in cartpole-v0</center>
-![a2c-pendulum](./a2c-pendulum-result.png)
+
+![a2c-pendulum](./a2c-pendulum<F4>-result.png)
 <center>result of a2c in pendulum-v0, it's quite hard for a2c converge in pendulum.. </center>
 
 # ppo
