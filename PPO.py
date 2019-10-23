@@ -10,6 +10,9 @@ import torch.nn.functional as F
 from tensorboardX import SummaryWriter
 
 
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+
 class PolicyNetwork(nn.Module):
     def __init__(self):
         super(PolicyNetwork, self).__init__()
@@ -77,10 +80,10 @@ class Memory(object):
 
 
 env = gym.make('Pendulum-v0')
-policy = PolicyNetwork().cuda()
-old_policy = PolicyNetwork().cuda()
+policy = PolicyNetwork().to(device)
+old_policy = PolicyNetwork().to(device)
 optim = torch.optim.Adam(policy.parameters(), lr=2e-5)
-value = ValueNetwork().cuda()
+value = ValueNetwork().to(device)
 value_optim = torch.optim.Adam(value.parameters(), lr=4e-5)
 gamma = 0.99
 memory = Memory(200)
@@ -96,7 +99,7 @@ for epoch in count():
     episode_reward = 0
 
     for time_steps in range(200):
-        state_tensor = torch.FloatTensor(state).unsqueeze(0).cuda()
+        state_tensor = torch.FloatTensor(state).unsqueeze(0).to(device)
         action = policy.select_action(state_tensor)
         # print('action : ', action)
         next_state, reward, done, _ = env.step([action])
@@ -110,10 +113,10 @@ for epoch in count():
         steps += 1
         experiences = memory.sample(batch_size, False)
         batch_state, batch_next_state, batch_action, batch_reward = zip(*experiences)
-        batch_state = torch.FloatTensor(batch_state).cuda()
-        batch_next_state = torch.FloatTensor(batch_next_state).cuda()
-        batch_action = torch.FloatTensor(batch_action).unsqueeze(1).cuda()
-        batch_reward = torch.FloatTensor(batch_reward).unsqueeze(1).cuda()
+        batch_state = torch.FloatTensor(batch_state).to(device)
+        batch_next_state = torch.FloatTensor(batch_next_state).to(device)
+        batch_action = torch.FloatTensor(batch_action).unsqueeze(1).to(device)
+        batch_reward = torch.FloatTensor(batch_reward).unsqueeze(1).to(device)
         # batch_done = torch.FloatTensor(batch_done).unsqueeze(1).cuda()
 
         # print(batch_state.shape, batch_next_state.shape, batch_action.shape, batch_reward.shape)

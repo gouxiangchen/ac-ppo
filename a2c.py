@@ -10,6 +10,9 @@ from collections import deque
 import random
 
 
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+
 class PolicyNetwork(nn.Module):
     def __init__(self):
         super(PolicyNetwork, self).__init__()
@@ -74,8 +77,8 @@ class Memory(object):
 
 
 env = gym.make('CartPole-v0')
-policy = PolicyNetwork().cuda()
-value = ValueNetwork().cuda()
+policy = PolicyNetwork().to(device)
+value = ValueNetwork().to(device)
 optim = torch.optim.Adam(policy.parameters(), lr=1e-4)
 value_optim = torch.optim.Adam(value.parameters(), lr=3e-4)
 gamma = 0.99
@@ -90,7 +93,7 @@ for epoch in count():
     episode_reward = 0
 
     for time_steps in range(200):
-        state_tensor = torch.FloatTensor(state).unsqueeze(0).cuda()
+        state_tensor = torch.FloatTensor(state).unsqueeze(0).to(device)
         action = policy.select_action(state_tensor)
         next_state, reward, done, _ = env.step(int(action))
         episode_reward += reward
@@ -100,11 +103,11 @@ for epoch in count():
         state = next_state
     experiences = memory.sample(memory.size())
     batch_state, batch_next_state, batch_action, batch_reward, batch_done = zip(*experiences)
-    batch_state = torch.FloatTensor(batch_state).cuda()
-    batch_next_state = torch.FloatTensor(batch_next_state).cuda()
-    batch_action = torch.FloatTensor(batch_action).unsqueeze(1).cuda()
-    batch_reward = torch.FloatTensor(batch_reward).unsqueeze(1).cuda()
-    batch_done = torch.FloatTensor(batch_done).unsqueeze(1).cuda()
+    batch_state = torch.FloatTensor(batch_state).to(device)
+    batch_next_state = torch.FloatTensor(batch_next_state).to(device)
+    batch_action = torch.FloatTensor(batch_action).unsqueeze(1).to(device)
+    batch_reward = torch.FloatTensor(batch_reward).unsqueeze(1).to(device)
+    batch_done = torch.FloatTensor(batch_done).unsqueeze(1).to(device)
 
     # print(batch_state.shape, batch_next_state.shape, batch_action.shape, batch_reward.shape)
 
