@@ -24,3 +24,6 @@ a2c in cartpole and pendulum, the training result shows below
 ![ppo-pendulum](./ppo-pendulum-result.png)
 <center>result of ppo in pendulum-v0, somehow still hard to converge..don't know why, any one helps?</center>
 
+# ppo improved 
+![ppo-modified](./ppo-modified.png)
+<center>more efficient update with generalized advantage estimator (GAE) 
