@@ -15,15 +15,15 @@ implement A2C and PPO in pytorch
 a2c in cartpole and pendulum, the training result shows below
 
 ![a2c-cartpole](./a2c-cartpole-result.png)
-<center>result of a2c in cartpole-v0</center>
+<center>`a2c.py` result of a2c in cartpole-v0</center>
 
 ![a2c-pendulum](./a2c-pendulum-result.png)
-<center>result of a2c in pendulum-v0, it's quite hard for a2c converge in pendulum.. </center>
+<center>`a2c_pen.py` result of a2c in pendulum-v0, it's quite hard for a2c converge in pendulum.. </center>
 
 # ppo
 ![ppo-pendulum](./ppo-pendulum-result.png)
-<center>result of ppo in pendulum-v0, somehow still hard to converge..don't know why, any one helps?</center>
+<center>`PPO.py` result of ppo in pendulum-v0, somehow still hard to converge..don't know why, any one helps?</center>
 
 # ppo improved 
 ![ppo-modified](./ppo-modified.png)
-<center>more efficient update with generalized advantage estimator (GAE) 
+<center>`PPO_advantage.py` more efficient update with generalized advantage estimator (GAE) 
